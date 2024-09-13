@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Página inicial do Ponto Inicial - Explore e desenvolva sua criatividade.">
+    <title>Ponto Inicial - Home</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+
+        header {
+            background-image: url('header-background.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            height: 100px;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(203, 108, 230, 0.8), rgba(108, 123, 230, 0.8));
+            z-index: 1;
+        }
+
+        header .content {
+            position: relative;
+            z-index: 2;
+        }
+
+        header .logo {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 auto;
+            max-width: 100px;
+        }
+
+        header .logo img {
+            height: 80px;
+        }
+
+        header nav {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            z-index: 2;
+        }
+
+        header nav a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 5px 10px;
+        }
+
+        header nav a:hover {
+            text-decoration: none;
+            border-color: white;
+        }
+
+        .main-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 10px 0;
+            text-align: center;
+            width: 100%;
+            max-width: 600px; /* Ajusta a largura máxima dos cards */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            background-color: #6a0dad;
+            color: white;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .card a {
+            text-decoration: none;
+            color: inherit;
+            font-weight: bold;
+        }
+
+        .card img {
+            width: 100%; /* Mantém a largura dentro do card */
+            height: auto; /* Mantém a proporção da altura */
+            max-width: 200px; /* Limita a largura máxima */
+            max-height: 200px; /* Limita a altura máxima */
+            object-fit: cover; /* Cobre a área do elemento, preservando a proporção */
+            border-radius: 15px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 600px) {
+            header nav {
+                position: static;
+                margin-top: 10px;
+            }
+
+            header nav a {
+                display: block;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="content">
+            <div class="logo">
+                <img src="logo.png" alt="Logo do Ponto Inicial">
+            </div>
+            <nav aria-label="Navegação principal">
+                <a href="pontoinicial.html" aria-label="Página inicial">Home</a>
+                <a href="sobre.html" aria-label="Sobre Nós">Sobre Nós</a>
+                <a href="duvidas.html" aria-label="Dúvidas Frequentes">Dúvidas Frequentes</a>
+            </nav>
+        </div>
+    </header>
+
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Quiz de Atualidades - Ponto Inicial">
+    <title>Ponto Inicial - Quiz de Atualidades</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        header {
+           
+        }
+
+        header::before {
+        
+        }
+
+        header .content {
+            position: relative;
+            z-index: 2;
+        }
+
+        header nav {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+        }
+
+        header nav a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: bold;
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 5px 10px;
+        }
+
+        header nav a:hover {
+            border-color: white;
+        }
+
+        .quiz-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            text-align: center;
+            margin-top: 150px; /* Ajusta para evitar sobreposição do cabeçalho */
+        }
+
+        .question {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .options button {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #6a0dad;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .options button:hover {
+            background-color: #8e44ad;
+        }
+
+        .status {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+   
+
+    <div class="quiz-container">
+        <div id="quiz">
+            <div class="question" id="question">Carregando pergunta...</div>
+            <div class="options">
+                <button onclick="checkAnswer(0)">Alternativa A</button>
+                <button onclick="checkAnswer(1)">Alternativa B</button>
+                <button onclick="checkAnswer(2)">Alternativa C</button>
+                <button onclick="checkAnswer(3)">Alternativa D</button>
+            </div>
+            <div class="status" id="status"></div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            // Perguntas de Atualidades
+            {
+                question: 'Qual a principal função do 5G no Brasil?',
+                options: ['A - Facilitar downloads mais rápidos', 'B - Melhorar a conectividade de IoT (internet das coisas)', 'C - Diminuir a cobertura de sinal', 'D - Substituir a internet 4G'],
+                correct: 1
+            },
+            {
+                question: 'Qual país sediará a próxima Conferência do Clima da ONU (COP)?',
+                options: ['A - Índia', 'B - Brasil', 'C - Egito', 'D - Emirados Árabes Unidos'],
+                correct: 3
+            },
+            {
+                question: 'A vacina de RNA mensageiro contra a COVID-19 foi desenvolvida com qual principal objetivo?',
+                options: ['A - Reforçar a imunidade de doenças autoimunes', 'B - Produzir proteínas para induzir resposta imune', 'C - Alterar o DNA humano', 'D - Curar doenças crônicas'],
+                correct: 1
+            },
+            {
+                question: 'Quem venceu as eleições presidenciais dos Estados Unidos em 2020?',
+                options: ['A - Joe Biden', 'B - Donald Trump', 'C - Bernie Sanders', 'D - Kamala Harris'],
+                correct: 0
+            },
+            {
+                question: 'Qual país não faz parte da União Europeia?',
+                options: ['A - Espanha', 'B - Noruega', 'C - Itália', 'D - França'],
+                correct: 1
+            },
+            {
+                question: 'Qual é a capital do estado brasileiro do Acre?',
+                options: ['A - Rio Branco', 'B - Porto Velho', 'C - Belém', 'D - Manaus'],
+                correct: 0
+            },
+            {
+                question: 'O que a sigla "OMS" representa?',
+                options: ['A - Organização Mundial da Saúde', 'B - Organização Médica Social', 'C - Observatório de Medicinas Seguras', 'D - Organização para Médicos e Saúde'],
+                correct: 0
+            },
+            {
+                question: 'Qual empresa foi pioneira na criação da vacina contra a COVID-19 com tecnologia de RNA mensageiro?',
+                options: ['A - Pfizer', 'B - Johnson & Johnson', 'C - AstraZeneca', 'D - Sinovac'],
+                correct: 0
+            },
+            {
+                question: 'Qual é o maior país do mundo em extensão territorial?',
+                options: ['A - Canadá', 'B - China', 'C - Estados Unidos', 'D - Rússia'],
+                correct: 3
+            },
+            {
+                question: 'O que o conceito de "desmatamento zero" busca promover?',
+                options: ['A - Evitar o uso de madeira em construções', 'B - Limitar o corte de árvores em áreas urbanas', 'C - Reduzir a perda de florestas nativas', 'D - Incentivar a plantação de árvores em zonas urbanas'],
+                correct: 2
+            },
+            {
+                question: 'Em que ano ocorreu a Revolução Industrial?',
+                options: ['A - 1780', 'B - 1889', 'C - 1760', 'D - 1800'],
+                correct: 2
+            },
+            {
+                question: 'Qual é a moeda oficial do Japão?',
+                options: ['A - Yuan', 'B - Yen', 'C - Won', 'D - Dólar'],
+                correct: 1
+            },
+            {
+                question: 'Em que país está localizado o rio Nilo?',
+                options: ['A - Egito', 'B - Brasil', 'C - China', 'D - Índia'],
+                correct: 0
+            },
+            {
+                question: 'Qual o nome do primeiro satélite lançado ao espaço?',
+                options: ['A - Apollo 11', 'B - Sputnik 1', 'C - Hubble', 'D - Voyager'],
+                correct: 1
+            },
+            {
+                question: 'O que são combustíveis fósseis?',
+                options: ['A - Energia proveniente de plantas', 'B - Fontes de energia não renováveis formadas por restos orgânicos', 'C - Materiais usados na construção civil', 'D - Resíduos de atividades vulcânicas'],
+                correct: 1
+            },
+            {
+                question: 'Quem foi o primeiro presidente do Brasil?',
+                options: ['A - Getúlio Vargas', 'B - Juscelino Kubitschek', 'C - Deodoro da Fonseca', 'D - Dom Pedro II'],
+                correct: 2
+            },
+            {
+                question: 'A Amazônia é uma das maiores florestas tropicais do mundo. Qual a sua principal função no equilíbrio climático global?',
+                options: ['A - Fornecer minerais preciosos', 'B - Regular o ciclo hidrológico', 'C - Aumentar a poluição atmosférica', 'D - Proteger espécies marinhas'],
+                correct: 1
+            },
+            {
+                question: 'Qual dos seguintes países não faz parte da OTAN?',
+                options: ['A - Estados Unidos', 'B - Rússia', 'C - Canadá', 'D - Reino Unido'],
+                correct: 1
+            },
+            {
+                question: 'Qual é a função da ONU?',
+                options: ['A - Organizar eventos esportivos internacionais', 'B - Proteger os direitos humanos e promover a paz', 'C - Desenvolver tecnologias de comunicação', 'D - Controlar a economia global'],
+                correct: 1
+            },
+            {
+                question: 'Qual foi o principal motivo para o surgimento da crise econômica de 2008?',
+                options: ['A - Aumento das taxas de juros', 'B - Colapso do mercado imobiliário e empréstimos subprime', 'C - Alta dos preços do petróleo', 'D - Crise política na Europa'],
+                correct: 1
+            },
+            {
+                question: 'Quem é conhecido como o “pai da teoria da relatividade”?',
+                options: ['A - Isaac Newton', 'B - Albert Einstein', 'C - Niels Bohr', 'D - Galileo Galilei'],
+                correct: 1
+            },
+            {
+                question: 'O que é a “Agenda 2030”?',
+                options: ['A - Um plano de exploração espacial', 'B - Um conjunto de metas para o desenvolvimento sustentável', 'C - Uma estratégia de crescimento econômico', 'D - Um programa de combate ao câncer'],
+                correct: 1
+            },
+            {
+                question: 'Qual é a capital da Austrália?',
+                options: ['A - Sydney', 'B - Melbourne', 'C - Canberra', 'D - Brisbane'],
+                correct: 2
+            },
+            {
+                question: 'Qual é o principal desafio ambiental que o mundo enfrenta atualmente?',
+                options: ['A - Desmatamento', 'B - Poluição da água', 'C - Mudanças climáticas', 'D - Poluição sonora'],
+                correct: 2
+            },
+            {
+                question: 'Qual é a função da criptografia em segurança digital?',
+                options: ['A - Aumentar a velocidade de transmissão de dados', 'B - Proteger dados contra acessos não autorizados', 'C - Reduzir o consumo de energia', 'D - Melhorar a qualidade dos dados'],
+                correct: 1
+            },
+            {
+                question: 'Qual é o maior lago do mundo em volume de água?',
+                options: ['A - Lago Superior', 'B - Lago Baikal', 'C - Lago Victoria', 'D - Lago Titicaca'],
+                correct: 1
+            },
+            {
+                question: 'Qual é o principal objetivo da Pesquisa e Desenvolvimento (P&D) nas empresas?',
+                options: ['A - Aumentar a produção', 'B - Reduzir custos operacionais', 'C - Desenvolver novos produtos e tecnologias', 'D - Expandir o mercado'],
+                correct: 2
+            },
+            {
+                question: 'Qual é o país com a maior quantidade de pirâmides?',
+                options: ['A - Egito', 'B - México', 'C - Peru', 'D - Sudão'],
+                correct: 3
+            },
+            {
+                question: 'Qual é a importância do Acordo de Paris para o meio ambiente?',
+                options: ['A - Reduzir as emissões de gases de efeito estufa', 'B - Estabelecer regras para o uso de pesticidas', 'C - Criar áreas de proteção ambiental', 'D - Promover o uso de energia nuclear'],
+                correct: 0
+            },
+            {
+                question: 'Quem é considerado o fundador da teoria dos jogos?',
+                options: ['A - John Nash', 'B - Adam Smith', 'C - Albert Einstein', 'D - Karl Marx'],
+                correct: 0
+            },
+            {
+                question: 'Qual é a principal causa do aumento do nível do mar?',
+                options: ['A - Derretimento das calotas polares', 'B - Aumento da população costeira', 'C - Poluição dos oceanos', 'D - Atividade vulcânica'],
+                correct: 0
+            },
+            // Perguntas de Lógica
+            {
+                question: 'Uma loja vende maçãs por R$2,00 cada e laranjas por R$3,00 cada. Um cliente comprou 10 frutas e gastou R$25,00. Quantas maçãs e laranjas ele comprou?',
+                options: ['A - 5 maçãs e 5 laranjas', 'B - 7 maçãs e 3 laranjas', 'C - 6 maçãs e 4 laranjas', 'D - 4 maçãs e 6 laranjas'],
+                correct: 2
+            },
+            {
+                question: 'Se dois relógios baterem as horas ao mesmo tempo, mas um atrasa 1 minuto por hora e o outro adianta 1 minuto por hora, em quanto tempo eles voltarão a bater juntos novamente?',
+                options: ['A - 30 horas', 'B - 60 horas', 'C - 120 horas', 'D - 720 horas'],
+                correct: 3
+            },
+            {
+                question: 'Qual é o próximo número na sequência: 2, 6, 12, 20, ...?',
+                options: ['A - 28', 'B - 30', 'C - 32', 'D - 34'],
+                correct: 0
+            },
+            {
+                question: 'Um homem tem três filhos. O primeiro filho é A, o segundo filho é B e o terceiro filho é C. Se A e B são maiores que C, qual é a relação correta entre os filhos?',
+                options: ['A - C é o filho mais velho', 'B - A é o filho mais novo', 'C - B é o filho mais novo', 'D - C é o filho do meio'],
+                correct: 0
+            },
+            {
+                question: 'Em uma sala há 10 pessoas. Cada pessoa aperta a mão de todas as outras pessoas uma vez. Quantos apertos de mão ocorrem?',
+                options: ['A - 45', 'B - 55', 'C - 90', 'D - 100'],
+                correct: 0
+            },
+            {
+                question: 'Qual é a solução para a equação 3x - 5 = 16?',
+                options: ['A - 5', 'B - 7', 'C - 9', 'D - 11'],
+                correct: 3
+            },
+            {
+                question: 'Em uma corrida, você ultrapassa o segundo colocado. Qual posição você ocupa agora?',
+                options: ['A - Primeira', 'B - Segunda', 'C - Terceira', 'D - Quarta'],
+                correct: 1
+            },
+            {
+                question: 'Qual é a próxima letra na sequência: A, C, F, J, O, ...?',
+                options: ['A - P', 'B - Q', 'C - R', 'D - S'],
+                correct: 0
+            },
+            {
+                question: 'Qual é o número que falta na sequência: 1, 4, 9, 16, ?',
+                options: ['A - 20', 'B - 25', 'C - 30', 'D - 36'],
+                correct: 1
+            },
+            {
+                question: 'Se um livro custa R$30,00 e está com 25% de desconto, qual é o preço final do livro?',
+                options: ['A - R$22,50', 'B - R$25,00', 'C - R$27,00', 'D - R$20,00'],
+                correct: 0
+            },
+            {
+                question: 'Qual é a soma dos ângulos internos de um hexágono?',
+                options: ['A - 360 graus', 'B - 540 graus', 'C - 720 graus', 'D - 900 graus'],
+                correct: 1
+            },
+            // Perguntas de Matemática (nível 9º ano)
+            {
+                question: 'Qual é o valor de x na equação 2x + 3 = 7?',
+                options: ['A - 1', 'B - 2', 'C - 3', 'D - 4'],
+                correct: 1
+            },
+            {
+                question: 'Qual é a área de um triângulo com base 10 cm e altura 5 cm?',
+                options: ['A - 25 cm²', 'B - 50 cm²', 'C - 75 cm²', 'D - 100 cm²'],
+                correct: 1
+            },
+            {
+                question: 'Se você lançar um dado, qual é a probabilidade de sair um número ímpar?',
+                options: ['A - 1/2', 'B - 1/3', 'C - 1/4', 'D - 1/6'],
+                correct: 0
+            },
+            {
+                question: 'Qual é a fórmula para encontrar a área de um círculo?',
+                options: ['A - πr²', 'B - 2πr', 'C - πd', 'D - 2πr²'],
+                correct: 0
+            },
+            {
+                question: 'Qual é a raiz quadrada de 144?',
+                options: ['A - 10', 'B - 12', 'C - 14', 'D - 16'],
+                correct: 1
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const questionElement = document.getElementById('question');
+            const optionsButtons = document.querySelectorAll('.options button');
+            const statusElement = document.getElementById('status');
+            
+            const question = questions[currentQuestionIndex];
+            questionElement.textContent = question.question;
+            
+            optionsButtons.forEach((button, index) => {
+                button.textContent = question.options[index];
+            });
+
+            statusElement.textContent = `Questão ${currentQuestionIndex + 1} de ${questions.length}`;
+        }
+
+        function checkAnswer(selectedIndex) {
+            const question = questions[currentQuestionIndex];
+            const statusElement = document.getElementById('status');
+            
+            if (selectedIndex === question.correct) {
+                score++;
+                statusElement.textContent = 'Resposta correta!';
+            } else {
+                statusElement.textContent = 'Resposta incorreta.';
+            }
+
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                setTimeout(loadQuestion, 1000);
+            } else {
+                setTimeout(showFinalResult, 1000);
+            }
+        }
+
+        function showFinalResult() {
+            const quizElement = document.getElementById('quiz');
+            quizElement.innerHTML = `<div class="status">Você acertou ${score} de ${questions.length} questões.</div>`;
+        }
+
+        loadQuestion();
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Página inicial do Ponto Inicial - Explore e desenvolva sua criatividade.">
+    <title>Ponto Inicial - Home</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+
+        header {
+            background-image: url('header-background.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            height: 100px;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(203, 108, 230, 0.8), rgba(108, 123, 230, 0.8));
+            z-index: 1;
+        }
+
+        header .content {
+            position: relative;
+            z-index: 2;
+        }
+
+        header .logo {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 auto;
+            max-width: 100px;
+        }
+
+        header .logo img {
+            height: 80px;
+        }
+
+        header nav {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            z-index: 2;
+        }
+
+        header nav a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 5px 10px;
+        }
+
+        header nav a:hover {
+            text-decoration: none;
+            border-color: white;
+        }
+
+        .main-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 10px 0;
+            text-align: center;
+            width: 100%;
+            max-width: 600px; /* Ajusta a largura máxima dos cards */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            background-color: #6a0dad;
+            color: white;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .card a {
+            text-decoration: none;
+            color: inherit;
+            font-weight: bold;
+        }
+
+        .card img {
+            width: 100%; /* Mantém a largura dentro do card */
+            height: auto; /* Mantém a proporção da altura */
+            max-width: 200px; /* Limita a largura máxima */
+            max-height: 200px; /* Limita a altura máxima */
+            object-fit: cover; /* Cobre a área do elemento, preservando a proporção */
+            border-radius: 15px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 600px) {
+            header nav {
+                position: static;
+                margin-top: 10px;
+            }
+
+            header nav a {
+                display: block;
+                margin: 5px 0;
+            }
+        }
+
+        .intro-text {
+            margin: 20px;
+            font-size: 18px;
+            color: #333;
+            max-width: 800px;
+            text-align: center;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="content">
+            <div class="logo">
+                <img src="logo.png" alt="Logo do Ponto Inicial">
+            </div>
+            <nav aria-label="Navegação principal">
+                <a href="pontoinicial.html" aria-label="Página inicial">Home</a>
+                <a href="sobre.html" aria-label="Sobre Nós">Sobre Nós</a>
+                <a href="duvidas.html" aria-label="Dúvidas Frequentes">Dúvidas Frequentes</a>
+                
+            </nav>
+        </div>
+    </header>
+
+    <div class="intro-text">
+        O Ponto Inicial nasceu com o propósito de inspirar uma nova geração a se desconectar do excesso de informações rápidas e superficiais, e a redescobrir o poder de uma mente reflexiva, criativa e produtiva. Em um mundo onde a tecnologia facilita o acesso instantâneo a qualquer resposta, acreditamos que é fundamental resgatar a capacidade de pensar de forma independente, crítica e inovadora.<br><br>
+
+        Somos um espaço dedicado a incentivar os jovens a explorarem além da superfície, a questionarem o óbvio e a se engajarem em um processo de aprendizado profundo e contínuo. Aqui, promovemos o desenvolvimento pessoal, intelectual e criativo, valorizando a curiosidade, o pensamento livre e a construção de soluções inovadoras para os desafios do futuro.<br><br>
+
+        Nosso objetivo é ser o ponto de partida para quem deseja se reconectar com suas ideias e potencial, e transformar seu modo de ver o mundo. No Ponto Inicial, acreditamos que, ao expandir suas capacidades de pensamento e criação, os jovens podem trilhar um caminho mais consciente, equilibrado e significativo.
+    </div>
+</body>
+</html>

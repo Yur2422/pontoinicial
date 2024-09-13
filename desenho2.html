@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Área Criativa - Desenhe e explore sua criatividade.">
+    <title>Área Criativa</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+
+        header {
+            background-image: url('header-background.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            height: 100px;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(203, 108, 230, 0.8), rgba(108, 123, 230, 0.8));
+            z-index: 1;
+        }
+
+        header .content {
+            position: relative;
+            z-index: 2;
+        }
+
+        header .logo {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 auto;
+            max-width: 100px;
+        }
+
+        header .logo img {
+            height: 80px;
+        }
+
+        header nav {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            z-index: 2;
+        }
+
+        header nav a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 5px 10px;
+        }
+
+        header nav a:hover {
+            text-decoration: none;
+            border-color: white;
+        }
+
+        .toolbar {
+            margin: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .toolbar button, .toolbar select, .toolbar input {
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 15px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .toolbar button {
+            background-color: #6a0dad;
+            color: white;
+        }
+
+        .toolbar button.active {
+            background-color: #4a0d8d;
+        }
+
+        .toolbar button:hover {
+            background-color: #4a0d8d;
+        }
+
+        .toolbar input[type="color"] {
+            width: 50px;
+            height: 30px;
+            border-radius: 15px;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .toolbar input[type="range"] {
+            width: 150px;
+            margin: 0 10px;
+        }
+
+        #canvas {
+            border: 1px solid #ccc;
+            background-color: white;
+            cursor: crosshair;
+            width: 1000px; /* Largura aumentada do canvas */
+            height: 800px; /* Altura aumentada do canvas */
+            position: relative;
+        }
+
+        .pointer {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.3);
+            width: 15px; /* Tamanho do ponteiro */
+            height: 15px; /* Tamanho do ponteiro */
+            z-index: 10;
+        }
+
+        #timer {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        #wordToDraw {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .button-container button {
+            margin: 0 10px;
+        }
+
+        @media (max-width: 600px) {
+            .toolbar {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="content">
+            <div class="logo">
+                <img src="logo.png" alt="Logo do Ponto Inicial">
+            </div>
+            <nav aria-label="Navegação principal">
+                <a href="pontoinicial.html" aria-label="Página Inicial">Home</a>
+                <a href="sobre.html aria-label="Sobre Nós">Sobre Nós</a>
+                <a href="duvidas.html" aria-label="Dúvidas Frequentes">Dúvidas Frequentes</a>
+                
+            </nav>
+        </div>
+    </header>
+
+    <div class="toolbar">
+        <button id="brush" class="active">Pincel</button>
+        <button id="eraser">Borracha</button>
+        <button id="clear">Limpar</button>
+        
+        <label for="colorPicker">Cor:</label>
+        <input type="color" id="colorPicker" value="#000000">
+        
+        <label for="sizePicker">Tamanho:</label>
+        <input type="range" id="sizePicker" min="5" max="50" value="10">
+        
+        <label for="brushType">Tipo de Pincel:</label>
+        <select id="brushType">
+            <option value="round" selected>Pincel Redondo</option>
+            <option value="square">Pincel Quadrado</option>
+        </select>
+    </div>
+
+    <div id="timer">Tempo Restante: 60</div>
+    <div id="wordToDraw">Palavra: [Clique em Iniciar]</div>
+
+    <div style="position: relative;">
+        <canvas id="canvas"></canvas>
+        <div id="pointer" class="pointer"></div>
+    </div>
+
+    <div class="button-container">
+        <button id="startButton">Iniciar</button>
+        <button id="endButton" disabled>Fim</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const pointer = document.getElementById('pointer');
+        const timerElement = document.getElementById('timer');
+        const wordElement = document.getElementById('wordToDraw');
+        const startButton = document.getElementById('startButton');
+        const endButton = document.getElementById('endButton');
+        
+        let drawing = false;
+        let tool = 'brush';
+        let color = '#000000';
+        let size = 10;
+        let brushType = 'round';
+        let timer;
+        let timeLeft;
+        let currentPhase = 1;
+        let wordList = ['cachorro', 'gato', 'bola', 'sol', 'estrela', 'árvore', 'flor', 'carro', 'avião', 'casa', 'livro', 'mãe', 'pai', 'coração', 'pato', 'boneca', 'peixe', 'música', 'mesa', 'janela'];
+        let currentWord = '';
+        let isGameActive = false;
+        let phasePassed = false;
+
+        canvas.width = 1000;
+        canvas.height = 800;
+
+        function updatePointerPosition(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            pointer.style.left = `${x}px`;
+            pointer.style.top = `${y}px`;
+        }
+
+        function startDrawing(e) {
+            if (tool === 'brush') {
+                drawing = true;
+                ctx.beginPath();
+                ctx.moveTo(e.offsetX, e.offsetY);
+            }
+        }
+
+        function draw(e) {
+            if (drawing && tool === 'brush') {
+                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = size;
+                ctx.lineCap = brushType;
+                ctx.stroke();
+            } else if (drawing && tool === 'eraser') {
+                ctx.clearRect(e.offsetX, e.offsetY, size, size);
+            }
+        }
+
+        function stopDrawing() {
+            drawing = false;
+            ctx.closePath();
+        }
+
+        function updateWord() {
+            const randomIndex = Math.floor(Math.random() * wordList.length);
+            currentWord = wordList[randomIndex];
+        }
+
+        function startTimer() {
+            timeLeft = 60 - (currentPhase - 1) * (currentPhase < 10 ? 2 : 3);
+            timerElement.textContent = `Tempo Restante: ${timeLeft}`;
+            timer = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = `Tempo Restante: ${timeLeft}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    endButton.disabled = false;
+                    wordElement.textContent = `Você ${phasePassed ? 'passou de fase!' : 'não passou de fase!'}`;
+                    isGameActive = false;
+                    startButton.textContent = 'Avançar';
+                }
+            }, 1000);
+        }
+
+        function startGame() {
+            if (!isGameActive) {
+                isGameActive = true;
+                startButton.disabled = true;
+                endButton.disabled = false;
+                phasePassed = false;
+                updateWord();
+                wordElement.textContent = `Palavra: ${currentWord}`;
+                startTimer();
+            }
+        }
+
+        function advancePhase() {
+            clearInterval(timer);
+            startButton.disabled = true;
+            endButton.disabled = true;
+            if (currentPhase < 10) {
+                currentPhase++;
+                wordElement.textContent = `Você passou para a fase ${currentPhase}. Clique em Iniciar para continuar.`;
+                startButton.textContent = 'Iniciar';
+            } else {
+                wordElement.textContent = `Você ganhou o jogo!`;
+                isGameActive = false;
+            }
+        }
+
+        function handleEndButtonClick() {
+            clearInterval(timer);
+            startButton.disabled = false;
+            endButton.disabled = true;
+            if (currentPhase < 10) {
+                phasePassed = true;
+                if (phasePassed) {
+                    advancePhase();
+                } else {
+                    wordElement.textContent = `Você não passou de fase. Tente novamente!`;
+                    updateWord();
+                }
+            } else {
+                wordElement.textContent = `Você perdeu!`;
+                isGameActive = false;
+            }
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseleave', stopDrawing);
+        canvas.addEventListener('mousemove', updatePointerPosition);
+
+        startButton.addEventListener('click', () => {
+            if (isGameActive) {
+                advancePhase();
+            } else {
+                startGame();
+            }
+        });
+
+        endButton.addEventListener('click', handleEndButtonClick);
+
+        document.getElementById('brush').addEventListener('click', () => {
+            tool = 'brush';
+            document.querySelector('.toolbar button.active').classList.remove('active');
+            document.getElementById('brush').classList.add('active');
+        });
+
+        document.getElementById('eraser').addEventListener('click', () => {
+            tool = 'eraser';
+            document.querySelector('.toolbar button.active').classList.remove('active');
+            document.getElementById('eraser').classList.add('active');
+        });
+
+        document.getElementById('clear').addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+
+        document.getElementById('colorPicker').addEventListener('input', (e) => {
+            color = e.target.value;
+        });
+
+        document.getElementById('sizePicker').addEventListener('input', (e) => {
+            size = e.target.value;
+        });
+
+        document.getElementById('brushType').addEventListener('change', (e) => {
+            brushType = e.target.value;
+        });
+    </script>
+</body>
+</html>

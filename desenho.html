@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Área Criativa - Desenhe e explore sua criatividade.">
+    <title>Área Criativa</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+
+        header {
+            background-image: url('header-background.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            height: 100px;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(203, 108, 230, 0.8), rgba(108, 123, 230, 0.8));
+            z-index: 1;
+        }
+
+        header .content {
+            position: relative;
+            z-index: 2;
+        }
+
+        header .logo {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 auto;
+            max-width: 100px;
+        }
+
+        header .logo img {
+            height: 80px;
+        }
+
+        header nav {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            z-index: 2;
+        }
+
+        header nav a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 5px 10px;
+        }
+
+        header nav a:hover {
+            text-decoration: none;
+            border-color: white;
+        }
+
+        .toolbar {
+            margin: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .toolbar button, .toolbar select, .toolbar input {
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 15px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .toolbar button {
+            background-color: #6a0dad;
+            color: white;
+        }
+
+        .toolbar button.active {
+            background-color: #4a0d8d;
+        }
+
+        .toolbar button:hover {
+            background-color: #4a0d8d;
+        }
+
+        .toolbar input[type="color"] {
+            width: 50px;
+            height: 30px;
+            border-radius: 15px;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .toolbar input[type="range"] {
+            width: 150px;
+            margin: 0 10px;
+        }
+
+        #canvas {
+            border: 1px solid #ccc;
+            background-color: white;
+            cursor: crosshair;
+            width: 1000px; /* Largura aumentada do canvas */
+            height: 800px; /* Altura aumentada do canvas */
+            position: relative;
+        }
+
+        .pointer {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.3);
+            width: 15px; /* Tamanho do ponteiro */
+            height: 15px; /* Tamanho do ponteiro */
+            z-index: 10;
+        }
+
+        @media (max-width: 600px) {
+            .toolbar {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="content">
+            <div class="logo">
+                <img src="logo.png" alt="Logo do Ponto Inicial">
+            </div>
+            <nav aria-label="Navegação principal">
+                <a href="pontoinicial.html" aria-label="Página Inicial">Home</a>
+                <a href="sobre.html" aria-label="Sobre Nós">Sobre Nós</a>
+                <a href="duvidas.html" aria-label="Dúvidas Frequentes">Dúvidas Frequentes</a>
+        
+            </nav>
+        </div>
+    </header>
+
+    <div class="toolbar">
+        <button id="brush" class="active">Pincel</button>
+        <button id="eraser">Borracha</button>
+        <button id="clear">Limpar</button>
+        
+        <label for="colorPicker">Cor:</label>
+        <input type="color" id="colorPicker" value="#000000">
+        
+        <label for="sizePicker">Tamanho:</label>
+        <input type="range" id="sizePicker" min="5" max="50" value="10">
+        
+        <label for="brushType">Tipo de Pincel:</label>
+        <select id="brushType">
+            <option value="round" selected>Pincel Redondo</option>
+            <option value="square">Pincel Quadrado</option>
+        </select>
+    </div>
+
+    <div style="position: relative;">
+        <canvas id="canvas"></canvas>
+        <div id="pointer" class="pointer"></div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const pointer = document.getElementById('pointer');
+        
+        let drawing = false;
+        let tool = 'brush';
+        let color = '#000000';
+        let size = 10;
+        let brushType = 'round';
+
+        canvas.width = 1000; // Largura do canvas
+        canvas.height = 800; // Altura do canvas
+
+        function updatePointerPosition(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            pointer.style.left = `${x}px`;
+            pointer.style.top = `${y}px`;
+        }
+
+        function startDrawing(e) {
+            if (tool === 'brush') {
+                drawing = true;
+                ctx.beginPath();
+                ctx.moveTo(e.offsetX, e.offsetY);
+            }
+        }
+
+        function draw(e) {
+            if (drawing && tool === 'brush') {
+                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = size;
+                ctx.lineCap = brushType;
+                ctx.stroke();
+            } else if (drawing && tool === 'eraser') {
+                ctx.clearRect(e.offsetX, e.offsetY, size, size);
+            }
+        }
+
+        function stopDrawing() {
+            drawing = false;
+            ctx.closePath();
+        }
+
+        document.getElementById('brush').addEventListener('click', () => {
+            tool = 'brush';
+            document.getElementById('brush').classList.add('active');
+            document.getElementById('eraser').classList.remove('active');
+        });
+
+        document.getElementById('eraser').addEventListener('click', () => {
+            tool = 'eraser';
+            document.getElementById('eraser').classList.add('active');
+            document.getElementById('brush').classList.remove('active');
+        });
+
+        document.getElementById('clear').addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+
+        document.getElementById('colorPicker').addEventListener('input', (e) => {
+            color = e.target.value;
+        });
+
+        document.getElementById('sizePicker').addEventListener('input', (e) => {
+            size = e.target.value;
+        });
+
+        document.getElementById('brushType').addEventListener('change', (e) => {
+            brushType = e.target.value;
+        });
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseleave', stopDrawing);
+        canvas.addEventListener('mousemove', updatePointerPosition);
+    </script>
+</body>
+</html>

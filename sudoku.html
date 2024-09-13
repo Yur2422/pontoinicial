@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Página inicial do Ponto Inicial - Explore e desenvolva sua criatividade.">
+    <title>Ponto Inicial - Sudoku</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+        .faixa {
+            width: 100%;
+            height: 25px; /* Altura da faixa */
+            background-color: #f0f0f0; /* Cor de fundo */
+            position: absolute; /* Posiciona a faixa */
+            top: 0; /* Alinha ao topo da página */
+            left: 0; /* Alinha à esquerda da página */
+            margin-top: 690px;
+        }
+        header {
+            background-image: url('header-background.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            height: 100px;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(203, 108, 230, 0.8), rgba(108, 123, 230, 0.8));
+            z-index: 1;
+        }
+
+        header .content {
+            position: relative;
+            z-index: 2;
+        }
+
+        header .logo {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 auto;
+            max-width: 100px;
+        }
+
+        header .logo img {
+            height: 80px;
+        }
+
+        header nav {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            z-index: 2;
+        }
+
+        header nav a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 5px 10px;
+        }
+
+        header nav a:hover {
+            text-decoration: none;
+            border-color: white;
+        }
+
+        .main-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .wrap {
+            padding: 2em 1em;
+            width: 400px;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .sudoku-board {
+            min-height: 22.75rem;
+            margin-top: 3px;
+            margin-bottom: 1em;
+        }
+
+        .sudoku-board-cell {
+            display: inline-block;
+            position: relative;
+            border: 1px solid #ddd;
+            background: white;
+            max-width: 11.11111%;
+        }
+
+        [data-board-size="9"].sudoku-board .sudoku-board-cell:nth-of-type(9n+1) {
+            border-left-width: 2px;
+            border-left-color: #808080;
+        }
+
+        [data-board-size="9"].sudoku-board .sudoku-board-cell:nth-of-type(n):nth-of-type(-n+9) {
+            border-top-width: 2px;
+            border-top-color: #808080;
+        }
+
+        [data-board-size="9"].sudoku-board .sudoku-board-cell:nth-of-type(3n) {
+            border-right-width: 2px;
+            border-right-color: #808080;
+        }
+
+        [data-board-size="9"].sudoku-board .sudoku-board-cell:nth-of-type(n+19):nth-of-type(-n+27),
+        [data-board-size="9"].sudoku-board .sudoku-board-cell:nth-of-type(n+46):nth-of-type(-n+54),
+        [data-board-size="9"].sudoku-board .sudoku-board-cell:nth-of-type(n+73):nth-of-type(-n+81) {
+            border-bottom-width: 2px;
+            border-bottom-color: #808080;
+        }
+
+        .sudoku-board-cell input {
+            background: none;
+            font-size: 19.2px;
+            font-size: 1.2rem;
+            text-align: center;
+            width: 2em;
+            max-width: 100%;
+            height: 2em;
+            border: 0;
+            position: relative;
+            z-index: 1; /*on top of candidates*/
+        }
+
+        .sudoku-board-cell .highlight-val {
+            color: #00d;
+        }
+
+        .sudoku-board-cell .board-cell--error {
+            background: #d00;
+            color: #eee;
+        }
+
+        .sudoku-board-cell .candidates {
+            display: none; /*hidden by default*/
+            position: absolute;
+            top: 0; bottom: 0; left: 0; right: 0;
+            text-align: center;
+            font-size: .75em;
+            letter-spacing: -.5px;
+            font-family: monospace, sans-serif;
+            line-height: 0;
+            text-align: justify;
+        }
+
+        .sudoku-board .candidates:after {
+            content: "";
+            display: inline-block;
+            width: 100%;
+        }
+
+        @media(max-width: 23em) {
+            .sudoku-board .candidates {
+                letter-spacing: -2px;
+            }
+        }
+
+        .showCandidates .candidates {
+            display: block;
+        }
+
+        .sudoku-board .candidates div {
+            display: inline-block;
+            width: 20%;
+            line-height: 1.13;
+            vertical-align: top;
+            *display: inline;
+            *zoom: 1;
+        }
+
+        .candidate--highlight {
+            background-color: yellow;
+        }
+
+        .candidate--to-remove {
+            background-color: red;
+            color: white;
+        }
+
+        .sudokubutton1, .sudokubutton2, .sudokubutton3, .sudokubutton4,
+        .sudokubutton5, .sudokubutton6, .sudokubutton7 {
+            color: white;
+            -webkit-transition-duration: 0.3s;
+            transition-duration: 0.3s;
+            padding: 1px 6px;
+        }
+
+        .sudokubutton1 {
+            background-color: #3cbf71;
+        }
+
+        .sudokubutton2 {
+            background-color: #ff9224;
+        }
+
+        .sudokubutton3 {
+            background-color: #ff3c3c;
+        }
+
+        .sudokubutton4 {
+            background-color: #020202;
+        }
+
+        .sudokubutton5, .sudokubutton6 {
+            background-color: #4040ff;
+        }
+
+        .sudokubutton7 {
+            background-color: #899db6;
+        }
+
+        .sudokubutton1:hover, .sudokubutton2:hover, .sudokubutton3:hover, .sudokubutton4:hover,
+        .sudokubutton5:hover, .sudokubutton6:hover, .sudokubutton7:hover {
+            background-color: #EDEDED;
+            color: black;
+            cursor: pointer;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .wrap {
+            padding: 2em 1em;
+            width: 400px;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media(min-width: 30em) {
+            .wrap {
+                width: 490px;
+            }
+
+            .sudoku-board input {
+                font-size: 24px;
+                font-size: 1.5rem;
+            }
+
+            .sudoku-board .candidates {
+                font-size: .8em;
+            }
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script src="https://mczak.com/code/sudoku/js/sudoku2.js"></script>
+</head>
+<body>
+    <header>
+        <div class="content">
+            <div class="logo">
+                <img src="logo.png" alt="Logo do Ponto Inicial">
+            </div>
+            <nav aria-label="Navegação principal">
+                <a href="pontoinicial.html" aria-label="Página inicial">Home</a>
+                <a href="sobre.html" aria-label="Sobre Nós">Sobre Nós</a>
+                <a href="duvidas.html" aria-label="Dúvidas Frequentes">Dúvidas Frequentes</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <h1>Sudoku</h1>
+        <div class="wrap">
+            <!-- show candidates toggle -->
+            <label for="toggleCandidates">Mostrar possibilidades</label>
+            <input id="toggleCandidates" class="js-candidate-toggle" type="checkbox"/>
+            <!-- generate board buttons -->
+            Novo:
+            <button type="button" class="sudokubutton1 js-generate-board-btn--easy">Fácil</button>
+            <button type="button" class="sudokubutton2 js-generate-board-btn--medium">Médio</button>
+            <button type="button" class="sudokubutton3 js-generate-board-btn--hard">Difícil</button>
+            <button type="button" class="sudokubutton4 js-generate-board-btn--very-hard">Muito Difícil</button>
+
+            <!-- the only required html -->
+            <div id="sudoku" class="sudoku-board"></div>
+
+            <!-- solve buttons -->
+            Resolver: <button type="button" class="sudokubutton5 js-solve-step-btn">Um Passo</button>
+            <button type="button" class="sudokubutton6 js-solve-all-btn">Tudo</button>
+            <br>
+            <!-- clear board btn -->
+            Limpar: <button type="button" class="sudokubutton7 js-clear-board-btn">Tabuleiro</button>
+        </div>
+    </main>
+
+    <script>
+        var $candidateToggle = $(".js-candidate-toggle"),
+            $generateBoardBtnEasy = $(".js-generate-board-btn--easy"),
+            $generateBoardBtnMedium = $(".js-generate-board-btn--medium"),
+            $generateBoardBtnHard = $(".js-generate-board-btn--hard"),
+            $generateBoardBtnVeryHard = $(".js-generate-board-btn--very-hard"),
+            $solveStepBtn = $(".js-solve-step-btn"),
+            $solveAllBtn = $(".js-solve-all-btn"),
+            $clearBoardBtn = $(".js-clear-board-btn"),
+            mySudokuJS = $("#sudoku").sudokuJS({
+                difficulty: "very hard",
+                // change state of our candidate showing checkbox on change in sudokuJS
+                candidateShowToggleFn: function(showing) {
+                    $candidateToggle.prop("checked", showing);
+                }
+            });
+
+        $solveStepBtn.on("click", mySudokuJS.solveStep);
+        $solveAllBtn.on("click", mySudokuJS.solveAll);
+        $clearBoardBtn.on("click", mySudokuJS.clearBoard);
+
+        $generateBoardBtnEasy.on("click", function() {
+            mySudokuJS.generateBoard("easy");
+        });
+        $generateBoardBtnMedium.on("click", function() {
+            mySudokuJS.generateBoard("medium");
+        });
+        $generateBoardBtnHard.on("click", function() {
+            mySudokuJS.generateBoard("hard");
+        });
+        $generateBoardBtnVeryHard.on("click", function() {
+            mySudokuJS.generateBoard("very hard");
+        });
+
+        $candidateToggle.on("change", function() {
+            if ($candidateToggle.is(":checked"))
+                mySudokuJS.showCandidates();
+            else
+                mySudokuJS.hideCandidates();
+        });
+        $candidateToggle.trigger("change");
+    </script>
+        <div class="faixa"></div>
+</body>
+</html>
