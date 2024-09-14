@@ -124,9 +124,10 @@
             border: 1px solid #ccc;
             background-color: white;
             cursor: crosshair;
-            width: 1000px; /* Largura aumentada do canvas */
-            height: 800px; /* Altura aumentada do canvas */
+            width: 1000px;
+            height: 800px;
             position: relative;
+            margin-top: 20px;
         }
 
         .pointer {
@@ -135,8 +136,8 @@
             pointer-events: none;
             transform: translate(-50%, -50%);
             background: rgba(0, 0, 0, 0.3);
-            width: 15px; /* Tamanho do ponteiro */
-            height: 15px; /* Tamanho do ponteiro */
+            width: 15px;
+            height: 15px;
             z-index: 10;
         }
 
@@ -151,9 +152,10 @@
         }
 
         .button-container {
-            margin-top: 20px;
+            margin: 20px;
             display: flex;
             justify-content: center;
+            position: relative;
         }
 
         .button-container button {
@@ -174,10 +176,9 @@
                 <img src="logo.png" alt="Logo do Ponto Inicial">
             </div>
             <nav aria-label="Navegação principal">
-                <a href="index.html" aria-label="Página Inicial">Home</a>
-                <a href="sobre.html aria-label="Sobre Nós">Sobre Nós</a>
+                <a href="pontoinicial.html" aria-label="Página Inicial">Home</a>
+                <a href="sobre.html" aria-label="Sobre Nós">Sobre Nós</a>
                 <a href="duvidas.html" aria-label="Dúvidas Frequentes">Dúvidas Frequentes</a>
-                
             </nav>
         </div>
     </header>
@@ -203,14 +204,14 @@
     <div id="timer">Tempo Restante: 60</div>
     <div id="wordToDraw">Palavra: [Clique em Iniciar]</div>
 
-    <div style="position: relative;">
-        <canvas id="canvas"></canvas>
-        <div id="pointer" class="pointer"></div>
-    </div>
-
     <div class="button-container">
         <button id="startButton">Iniciar</button>
         <button id="endButton" disabled>Fim</button>
+    </div>
+
+    <div id="canvasContainer" style="position: relative;">
+        <canvas id="canvas"></canvas>
+        <div id="pointer" class="pointer"></div>
     </div>
 
     <script>
@@ -230,6 +231,7 @@
         let timer;
         let timeLeft;
         let currentPhase = 1;
+        const totalPhases = 10; // Número total de fases
         let wordList = ['cachorro', 'gato', 'bola', 'sol', 'estrela', 'árvore', 'flor', 'carro', 'avião', 'casa', 'livro', 'mãe', 'pai', 'coração', 'pato', 'boneca', 'peixe', 'música', 'mesa', 'janela'];
         let currentWord = '';
         let isGameActive = false;
@@ -277,108 +279,109 @@
         }
 
         function startTimer() {
-            timeLeft = 60 - (currentPhase - 1) * (currentPhase < 10 ? 2 : 3);
+            timeLeft = 60 - (currentPhase - 1) * 2; // Diminui 2 segundos por fase
+            if (timeLeft < 10) timeLeft = 10;
             timerElement.textContent = `Tempo Restante: ${timeLeft}`;
             timer = setInterval(() => {
                 timeLeft--;
-                timerElement.textContent = `Tempo Restante: ${timeLeft}`;
                 if (timeLeft <= 0) {
+                    timeLeft = 0;
                     clearInterval(timer);
-                    endButton.disabled = false;
-                    wordElement.textContent = `Você ${phasePassed ? 'passou de fase!' : 'não passou de fase!'}`;
-                    isGameActive = false;
-                    startButton.textContent = 'Avançar';
+                    endPhase();
                 }
+                timerElement.textContent = `Tempo Restante: ${timeLeft}`;
             }, 1000);
+            
+        }
+        
+
+        function endPhase() {
+            if (isGameActive) {
+                if (phasePassed) {
+                    wordElement.textContent = 'Parabéns!';
+                } else {
+                    wordElement.textContent = `Tempo esgotado! `;
+                }
+                isGameActive = false;
+                setTimeout(() => {
+                    if (currentPhase >= totalPhases) {
+                        alert('Você completou todas as fases!');
+                        resetGame();
+                    } else {
+                        currentPhase++;
+                        wordElement.textContent = `Palavra: [Clique em Iniciar]`;
+                        endButton.disabled = true;
+                        startButton.disabled = false; // Habilita o botão Iniciar
+                    }
+                }, 2000);
+            }
         }
 
-        function startGame() {
+        function startNewPhase() {
+            updateWord();
+            wordElement.textContent = `Palavra: ${currentWord}`;
+            endButton.disabled = false;
+            phasePassed = false;
+        }
+
+        function resetGame() {
+            currentPhase = 1;
+            startNewPhase();
+        }
+
+        function handleBrushTypeChange(e) {
+            brushType = e.target.value;
+        }
+
+        function handleSizeChange(e) {
+            size = e.target.value;
+        }
+
+        function handleColorChange(e) {
+            color = e.target.value;
+        }
+
+        function handleToolChange(e) {
+            tool = e.target.id;
+            document.querySelectorAll('.toolbar button').forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+        }
+
+        function handleStart() {
             if (!isGameActive) {
                 isGameActive = true;
+                startNewPhase();
+                startTimer(); // Inicia o temporizador somente após clicar em "Iniciar"
                 startButton.disabled = true;
-                endButton.disabled = false;
-                phasePassed = false;
-                updateWord();
-                wordElement.textContent = `Palavra: ${currentWord}`;
-                startTimer();
             }
         }
 
-        function advancePhase() {
-            clearInterval(timer);
-            startButton.disabled = true;
-            endButton.disabled = true;
-            if (currentPhase < 10) {
-                currentPhase++;
-                wordElement.textContent = `Você passou para a fase ${currentPhase}. Clique em Iniciar para continuar.`;
-                startButton.textContent = 'Iniciar';
-            } else {
-                wordElement.textContent = `Você ganhou o jogo!`;
-                isGameActive = false;
+        function handleEnd() {
+            if (isGameActive) {
+                endPhase();
+                endButton.disabled = true;
+                startButton.disabled = false; // Reabilitar o botão Iniciar
             }
         }
 
-        function handleEndButtonClick() {
-            clearInterval(timer);
-            startButton.disabled = false;
-            endButton.disabled = true;
-            if (currentPhase < 10) {
-                phasePassed = true;
-                if (phasePassed) {
-                    advancePhase();
-                } else {
-                    wordElement.textContent = `Você não passou de fase. Tente novamente!`;
-                    updateWord();
-                }
-            } else {
-                wordElement.textContent = `Você perdeu!`;
-                isGameActive = false;
-            }
+        function handleClear() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
 
+        canvas.addEventListener('mousemove', updatePointerPosition);
         canvas.addEventListener('mousedown', startDrawing);
         canvas.addEventListener('mousemove', draw);
         canvas.addEventListener('mouseup', stopDrawing);
         canvas.addEventListener('mouseleave', stopDrawing);
-        canvas.addEventListener('mousemove', updatePointerPosition);
 
-        startButton.addEventListener('click', () => {
-            if (isGameActive) {
-                advancePhase();
-            } else {
-                startGame();
-            }
-        });
-
-        endButton.addEventListener('click', handleEndButtonClick);
-
-        document.getElementById('brush').addEventListener('click', () => {
-            tool = 'brush';
-            document.querySelector('.toolbar button.active').classList.remove('active');
-            document.getElementById('brush').classList.add('active');
-        });
-
-        document.getElementById('eraser').addEventListener('click', () => {
-            tool = 'eraser';
-            document.querySelector('.toolbar button.active').classList.remove('active');
-            document.getElementById('eraser').classList.add('active');
-        });
-
-        document.getElementById('clear').addEventListener('click', () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-        });
-
-        document.getElementById('colorPicker').addEventListener('input', (e) => {
-            color = e.target.value;
-        });
-
-        document.getElementById('sizePicker').addEventListener('input', (e) => {
-            size = e.target.value;
-        });
-
-        document.getElementById('brushType').addEventListener('change', (e) => {
-            brushType = e.target.value;
-        });
+        document.getElementById('brush').addEventListener('click', handleToolChange);
+        document.getElementById('eraser').addEventListener('click', handleToolChange);
+        document.getElementById('clear').addEventListener('click', handleClear);
+        document.getElementById('sizePicker').addEventListener('input', handleSizeChange);
+        document.getElementById('colorPicker').addEventListener('input', handleColorChange);
+        document.getElementById('brushType').addEventListener('change', handleBrushTypeChange);
+        startButton.addEventListener('click', handleStart);
+        endButton.addEventListener('click', handleEnd);
     </script>
 </body>
 </html>

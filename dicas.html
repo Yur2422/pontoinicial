@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Página inicial do Ponto Inicial - Explore e desenvolva sua criatividade.">
+    <title>Ponto Inicial - Home</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+
+        header {
+            background-image: url('header-background.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            height: 100px;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(203, 108, 230, 0.8), rgba(108, 123, 230, 0.8));
+            z-index: 1;
+        }
+
+        header .content {
+            position: relative;
+            z-index: 2;
+        }
+
+        header .logo {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 auto;
+            max-width: 100px;
+        }
+
+        header .logo img {
+            height: 80px;
+        }
+
+        header nav {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            z-index: 2;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 5px 10px;
+        }
+
+        header nav a:hover {
+            text-decoration: none;
+            border-color: white;
+        }
+
+        .main-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .intro h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 10px;
+            text-align: center;
+            width: 100%;
+            max-width: 300px; /* Ajusta a largura máxima dos cards */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            background-color: #6a0dad;
+            color: white;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .card a {
+            text-decoration: none;
+            color: inherit;
+            font-weight: bold;
+        }
+
+        .card img {
+            width: 100%;
+            height: auto;
+            max-width: 200px;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 10px;
+        }
+
+        .games-section {
+            display: flex;
+            flex-wrap: wrap; /* Permite que os cards se movam para a linha seguinte em telas pequenas */
+            justify-content: center; /* Centraliza os cards */
+        }
+
+        @media (max-width: 600px) {
+            header nav {
+                position: static;
+                margin-top: 10px;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            header nav a {
+                display: block;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="content">
+            <div class="logo">
+                <img src="logo.png" alt="Logo do Ponto Inicial">
+            </div>
+            <nav aria-label="Navegação principal">
+                <a href="pontoinicial.html" aria-label="Página inicial">Home</a>
+                <a href="sobre.html" aria-label="Sobre Nós">Sobre Nós</a>
+                <a href="duvidas.html" aria-label="Dúvidas Frequentes">Dúvidas Frequentes</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="intro">
+            <h1>Jogos Físicos e Seus Benefícios</h1>
+            <p>Os jogos físicos são fundamentais para estimular o raciocínio lógico, habilidades sociais e a criatividade, além de promoverem interações mais diretas e intuitivas. A seguir, confira alguns exemplos que podem ser usados em favor do aprendizado e desenvolvimento cognitivo dos menores.</p>
+        </div>
+
+        <section class="games-section">
+            <div class="card">
+                <img src="xadrez.jpg" alt="Xadrez">
+                <h2>Xadrez</h2>
+                <p>O xadrez desenvolve habilidades de planejamento, pensamento lógico e antecipação, além de ajudar na concentração e paciência.</p>
+            </div>
+            <div class="card">
+                <img src="palavras.jpg" alt="Palavras Cruzadas">
+                <h2>Palavras Cruzadas</h2>
+                <p>Desafie seu vocabulário e raciocínio com as palavras cruzadas. Elas melhoram a memória e o conhecimento linguístico.</p>
+            </div>
+            <div class="card">
+                <img src="uno.jpg" alt="Uno">
+                <h2>Uno</h2>
+                <p>Uno é um jogo de cartas que desenvolve estratégias rápidas e ajuda a melhorar a tomada de decisões e o pensamento tático.</p>
+            </div>
+            <div class="card">
+                <img src="velha.jpg" alt="Jogo da Velha">
+                <h2>Jogo da Velha</h2>
+                <p>Um clássico jogo de lógica que aprimora o raciocínio estratégico e o pensamento analítico em uma dinâmica simples e rápida.</p>
+            </div>
+            <div class="card">
+                <img src="memoria.jpg" alt="Jogo da Memória">
+                <h2>Jogo da Memória</h2>
+                <p>Estimula a memória visual e a concentração ao desafiar os jogadores a encontrar pares de figuras iguais em uma sequência.</p>
+            </div>
+            <div class="card">
+                <img src="quebra.jpg" alt="Quebra-Cabeça">
+                <h2>Quebra-Cabeça</h2>
+                <p>Montar um quebra-cabeça ajuda no desenvolvimento do pensamento crítico, resolução de problemas e percepção visual.</p>
+            </div>
+        </section>
+
+        <div class="intro">
+            <h1>Jogos Digitais e Tecnologia</h1>
+            <p>Embora a tecnologia possa ser vista como um desafio para a concentração, ela também oferece oportunidades incríveis de aprendizado. Jogos digitais podem estimular a criatividade, o raciocínio lógico e a capacidade de resolver problemas complexos, quando usados de forma consciente.</p>
+        </div>
+
+        <section class="games-section">
+            <div class="card">
+                <img src="minecraft.jpg" alt="Minecraft">
+                <h2>Minecraft</h2>
+                <p>Um jogo de construção e exploração que estimula a criatividade, resolução de problemas e colaboração em equipe.</p>
+            </div>
+            <div class="card">
+                <img src="terraria.jpg" alt="Terraria">
+                <h2>Terraria</h2>
+                <p>Terraria combina aventura, criatividade e estratégia, promovendo o pensamento crítico e a capacidade de planejamento.</p>
+            </div>
+            <div class="card">
+                <img src="roblox.jpg" alt="Roblox">
+                <h2>Roblox</h2>
+                <p>Roblox é uma plataforma criativa que permite que os jogadores criem seus próprios jogos, incentivando o desenvolvimento de habilidades de programação e design.</p>
+            </div>
+            <div class="card">
+                <img src="portal.jpg" alt="Portal">
+                <h2>Portal</h2>
+                <p>Portal é um jogo de quebra-cabeça que exige lógica, raciocínio espacial e resolução criativa de problemas.</p>
+            </div>
+            <div class="card">
+                <img src="kerbal.jpg" alt="Kerbal Space Program">
+                <h2>Kerbal Space Program</h2>
+                <p>Simula o lançamento e operação de espaçonaves, ajudando a desenvolver conceitos de física e engenharia.</p>
+            </div>
+            <div class="card">
+                <img src="poly.jpg" alt="Poly Bridge">
+                <h2>Poly Bridge</h2>
+                <p>Poly Bridge é um jogo de simulação de construção de pontes que desafia os jogadores a projetar e construir estruturas para permitir que veículos atravessem com sucesso. Ele promove o desenvolvimento de habilidades em engenharia e física, encorajando a resolução criativa de problemas e a compreensão dos princípios básicos de construção e mecânica.</p>
+            </div>
+            
